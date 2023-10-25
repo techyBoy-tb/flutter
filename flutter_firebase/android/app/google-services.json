@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "605714312078",
+    "project_id": "ninja-brew-crew-8c4d4",
+    "storage_bucket": "ninja-brew-crew-8c4d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605714312078:android:a1f656bc6705deb1c3d2df",
+        "android_client_info": {
+          "package_name": "com.techyboy.sandbox.flutter_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-MEkjOlQ5cVduA3pIKdsYeUVeL4Dl924"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
