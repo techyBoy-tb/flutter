@@ -1,5 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_sandbox/model/Movie.dart';
+import 'package:flutter_sandbox/screens/home/details.dart';
+import 'package:flutter_sandbox/secrets.dart';
 import 'package:flutter_sandbox/services/services.dart';
 
 class Credits extends StatefulWidget {
@@ -28,92 +32,115 @@ class _CreditsState extends State<Credits> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.data != null) {
-              var data = snapshot.data!.movies;
+              var data = [];
+              var unreleasedMovies = [];
+              for (var element in snapshot.data!.movies) {
+                if (element.releaseDate != null) {
+                  data.add(element);
+                } else {
+                  unreleasedMovies.add(element);
+                }
+              }
+
+              data.sort((a, b) => (b.releaseDate ?? DateTime.now())
+                  .compareTo(a.releaseDate ?? DateTime.now()));
+
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Movie credits',
                       style: Theme.of(context).textTheme.titleLarge),
-                  AspectRatio(
-                      aspectRatio: 2.1,
-                      child: ListView.separated(
-                        padding: const EdgeInsets.all(8),
-                        itemCount: data.length > 20 ? 10 : data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                              height: 50,
-                              child: Card(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    backgroundColor: Colors.orange,
-                                    child: Text(
-                                      "M",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Wrap(
+                          children: List.generate(
+                            data.length,
+                            (creditIndex) {
+                              StarredMovie currentMovie = data[creditIndex];
+
+                              String releaseDate =
+                                  currentMovie.releaseDate != null
+                                      ? currentMovie.releaseDate
+                                          .toString()
+                                          .substring(0, 4)
+                                      : 'Coming soon...';
+
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              Details(movie: currentMovie)));
+                                },
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Hero(
+                                              tag:
+                                                  '$imageUrl${currentMovie.posterPath}',
+                                              child: Image.network(
+                                                  '$imageUrl${currentMovie.posterPath}',
+                                                  height: 150,
+// width: 200,
+                                                  fit: BoxFit.cover,
+                                                  errorBuilder: (context, error,
+                                                      stackTrace) {
+                                                return Container(
+                                                  color: Colors.grey,
+                                                  height: 150,
+                                                  child: Center(
+                                                    child: Transform.rotate(
+                                                      angle: pi / 4,
+                                                      child: const Text(
+                                                          'Coming soon...',
+                                                          style: TextStyle()),
+                                                    ),
+                                                  ),
+                                                );
+                                              })),
+                                        ),
+                                        const SizedBox(width: 15),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(currentMovie.title,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge),
+                                              const SizedBox(height: 10),
+                                              Text(releaseDate),
+                                              const SizedBox(height: 10),
+                                              Text(currentMovie.character,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium),
+                                            ],
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  ),
-                                  title: Text('Melbourne Cricket Stadium'),
-                                  subtitle: Text('Australia'),
+                                    const SizedBox(height: 15),
+                                  ],
                                 ),
-                              ));
-                        },
-                        separatorBuilder: (BuildContext context, int index) =>
-                            const Divider(),
-                      )
-                      // child: ListView.builder(
-                      //   shrinkWrap: true,
-                      //   // I am setting the max to 20!
-                      //   itemCount: data.length > 20 ? 10 : data.length,
-                      //   itemBuilder: (context, index) {
-                      //     return GestureDetector(
-                      //         onTap: () {
-                      //           // Navigator.push(
-                      //           //     context,
-                      //           //     MaterialPageRoute(
-                      //           //         builder: (context) => Person(
-                      //           //             personId: data[index]!.id ?? 0)));
-                      //         },
-                      //         // child: Padding(
-                      //         //     padding: const EdgeInsets.all(5),
-                      //         //     child: Column(
-                      //         //       mainAxisAlignment:
-                      //         //           MainAxisAlignment.spaceEvenly,
-                      //         //       children: [
-                      //         //         CircleAvatar(
-                      //         //           backgroundColor: Colors.grey,
-                      //         //           radius: 40,
-                      //         //           child: ClipOval(
-                      //         //               child: Hero(
-                      //         //             tag:
-                      //         //                 '$imageUrl${data[index].posterPath}',
-                      //         //             child: FadeInImage(
-                      //         //               width: double.infinity,
-                      //         //               fit: BoxFit.cover,
-                      //         //               image: NetworkImage(
-                      //         //                   '$imageUrl${data[index].posterPath}'),
-                      //         //               placeholder: const NetworkImage(
-                      //         //                   'http://www.familylore.org/images/2/25/UnknownPerson.png'),
-                      //         //               imageErrorBuilder:
-                      //         //                   (context, error, stackTrace) {
-                      //         //                 return Image.network(
-                      //         //                     'http://www.familylore.org/images/2/25/UnknownPerson.png');
-                      //         //               },
-                      //         //             ),
-                      //         //           )),
-                      //         //         ),
-                      //         //         SizedBox(
-                      //         //             width: 100,
-                      //         //             child: Text(
-                      //         //               data[index].title!,
-                      //         //               textAlign: TextAlign.center,
-                      //         //             )),
-                      //         //       ],
-                      //         //     )),
-                      //   },
-                      // )),
-                      )
+                              );
+                            },
+                            growable: false,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    ),
+                  )
                 ],
               );
             } else {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sandbox/model/Credit.dart';
-import 'package:flutter_sandbox/screens/person.dart';
+import 'package:flutter_sandbox/screens/home/person.dart';
 import 'package:flutter_sandbox/secrets.dart';
 import 'package:flutter_sandbox/services/services.dart';
 

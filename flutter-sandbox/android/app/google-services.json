@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "140197618314",
+    "project_id": "moviesandbox-e9ac0",
+    "storage_bucket": "moviesandbox-e9ac0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140197618314:android:09687290aec252029a4373",
+        "android_client_info": {
+          "package_name": "com.techyboy.flutter_sandbox"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAszvvunryxfcz7fj3ET_MkTRop3e4HFj0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

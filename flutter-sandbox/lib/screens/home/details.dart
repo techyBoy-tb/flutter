@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sandbox/model/CustomUser.dart';
 import 'package:flutter_sandbox/model/Movie.dart';
 import 'package:flutter_sandbox/secrets.dart';
+import 'package:flutter_sandbox/services/databaseService.dart';
+import 'package:flutter_sandbox/shared/heart.dart';
 import 'package:flutter_sandbox/utils/genre.dart';
 import 'package:flutter_sandbox/widgets/cast.dart';
+import 'package:provider/provider.dart';
 
 class Details extends StatefulWidget {
   final MovieDetails movie;
-  const Details({super.key, required this.movie});
+  final String? tag;
+
+  const Details({super.key, required this.movie, this.tag});
 
   @override
   State<Details> createState() => _DetailsState();
@@ -15,6 +21,11 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<CustomUser>(context);
+    final DatabaseService databaseService = DatabaseService(uid: user.uid);
+    final isMovieLiked =
+        databaseService.isMovieFavourite(widget.movie.id.toString());
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -23,7 +34,7 @@ class _DetailsState extends State<Details> {
             expandedHeight: MediaQuery.of(context).size.height / 2.1,
             flexibleSpace: FlexibleSpaceBar(
               background: Hero(
-                tag: '$imageUrl${widget.movie.posterPath}',
+                tag: widget.tag ?? '$imageUrl${widget.movie.posterPath}',
                 child: Image.network(
                   '$imageUrl${widget.movie.posterPath}',
                   fit: BoxFit.cover,
@@ -36,6 +47,18 @@ class _DetailsState extends State<Details> {
                 ),
               ),
             ),
+            actions: [
+              Heart(
+                  initialValue: isMovieLiked,
+                  onPress: (newVal) {
+                    if (newVal) {
+                      databaseService.addMovieToFavourites(widget.movie);
+                    } else {
+                      databaseService.removeMovieFromFavourites(
+                          widget.movie.id.toString());
+                    }
+                  })
+            ],
           ),
           SliverList(
               delegate: SliverChildBuilderDelegate((context, _) {

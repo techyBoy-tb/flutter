@@ -22,6 +22,20 @@ Future<MovieListResponse> getUpcomingMovies() async {
   }
 }
 
+Future<MovieListResponse> getPopularMovies() async {
+  endPoint = 'movie/popular';
+  String params = '&language=en-GB&page=1';
+  final String url = '$baseUrl$endPoint$key$params';
+
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    return movieListResponseFromJson(response.body);
+  } else {
+    throw Exception('Failed to load upcoming movies');
+  }
+}
+
 Future<Credit> getCredits(int id, bool isTvShow) async {
   endPoint = isTvShow ? 'tv/$id/credits' : 'movie/$id/credits';
   final String url = '$baseUrl$endPoint$key';
