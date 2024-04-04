@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "707132376586",
+    "project_id": "media-bcf14",
+    "storage_bucket": "media-bcf14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707132376586:android:3a5d2b8c103bd48285c1f3",
+        "android_client_info": {
+          "package_name": "com.kingford.media"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQqKFZ7zeZW0QNBOZ8jdkr7f0h7IGTqr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
